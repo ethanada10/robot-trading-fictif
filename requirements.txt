@@ -1,0 +1,6 @@
+yfinance
+streamlit
+pandas
+numpy
+matplotlib
+ta  # si tu utilises les indicateurs techniques
