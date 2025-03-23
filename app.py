@@ -98,13 +98,18 @@ with pd.ExcelWriter(buffer, engine='xlsxwriter') as writer:
     writer.close()
 st.download_button("📤 Télécharger Excel", data=buffer.getvalue(), file_name="trades.xlsx", mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
 
-# Bouton pour générer un rapport PDF
+# Bouton pour générer un rapport PDF (xhtml2pdf)
 if st.button("📄 Générer le rapport PDF"):
-    chemin_pdf = generer_pdf(df_hist, portefeuille)
-    with open(chemin_pdf, "rb") as f:
-        b64 = base64.b64encode(f.read()).decode()
-        href = f'<a href="data:application/pdf;base64,{b64}" download="rapport_trading.pdf">📥 Télécharger le rapport PDF</a>'
-        st.markdown(href, unsafe_allow_html=True)
+    pdf_file = generer_pdf(df_hist, portefeuille)
+    if pdf_file:
+        st.download_button(
+            label="📥 Télécharger le rapport PDF",
+            data=pdf_file,
+            file_name="rapport_trading.pdf",
+            mime="application/pdf"
+        )
+    else:
+        st.error("❌ Erreur lors de la génération du PDF.")
 
 # Courbe capital
 fig = px.line(df_hist, x="date", y="capital", title="Évolution du capital fictif")
