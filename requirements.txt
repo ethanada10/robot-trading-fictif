@@ -1,6 +1,8 @@
-yfinance
 streamlit
+yfinance
 pandas
 numpy
 matplotlib
-ta  # si tu utilises les indicateurs techniques
+ta
+xhtml2pdf
+
