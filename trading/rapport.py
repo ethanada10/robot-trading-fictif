@@ -1,8 +1,9 @@
 # === rapport.py ===
-import pdfkit
+from xhtml2pdf import pisa
 import pandas as pd
 from datetime import datetime
 import os
+from io import BytesIO
 
 def generer_pdf(df_trades, portefeuille, nom_fichier="rapport_trading.pdf"):
     # Préparer les données
@@ -38,11 +39,11 @@ def generer_pdf(df_trades, portefeuille, nom_fichier="rapport_trading.pdf"):
     """
 
     # Créer le PDF
-    options = {
-        'page-size': 'A4',
-        'encoding': "UTF-8",
-    }
+    output = BytesIO()
+    result = pisa.CreatePDF(html, dest=output)
 
-    chemin_sortie = os.path.join("data", nom_fichier)
-    pdfkit.from_string(html, chemin_sortie, options=options)
-    return chemin_sortie
+    if result.err:
+        return None
+    else:
+        output.seek(0)
+        return output
